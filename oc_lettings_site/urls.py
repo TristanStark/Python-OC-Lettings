@@ -1,13 +1,18 @@
 from django.contrib import admin
+from django.urls import include
 from django.urls import path
+from django.views.generic import TemplateView
 
-from . import views
 
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('lettings/', views.lettings_index, name='lettings_index'),
-    path('lettings/<int:letting_id>/', views.letting, name='letting'),
-    path('profiles/', views.profiles_index, name='profiles_index'),
-    path('profiles/<str:username>/', views.profile, name='profile'),
+    path('', TemplateView.as_view(template_name='index.html'), name='index'),
+    path(
+        'lettings/',
+        include(('lettings.urls', 'lettings'), namespace='lettings')
+    ),
+    path(
+        'profiles/',
+        include(('profiles.urls', 'profiles'), namespace='profiles')
+    ),
     path('admin/', admin.site.urls),
 ]
