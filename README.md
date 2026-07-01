@@ -76,3 +76,30 @@ Using PowerShell, as above except:
 
 - To activate the virtual environment, `.\venv\Scripts\Activate.ps1` 
 - Replace `which <my-command>` with `(Get-Command <my-command>).Path`
+
+## Container image
+
+The repository now includes a GitHub Actions containerization workflow that builds the site image and
+pushes it to Docker Hub on every push to `master`.
+
+### Docker Hub setup
+
+Add these repository secrets before running the workflow:
+
+- `DOCKERHUB_USERNAME`
+- `DOCKERHUB_TOKEN`
+
+Create a Docker Hub repository named `python-oc-lettings` under that account.
+
+### Published tags
+
+- `latest` for the default branch image
+- `sha-<commit>` for an immutable commit-specific image tag
+
+### Run the site with Docker only
+
+Pull and start the published image in one command:
+
+- `docker run --pull always --rm -p 8000:8000 <dockerhub-username>/python-oc-lettings:latest`
+
+To run a specific immutable image instead of `latest`, replace the tag with `sha-<commit>`.
