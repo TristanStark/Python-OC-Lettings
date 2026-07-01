@@ -65,15 +65,15 @@ jobs:
 
             mkdir -p "$APP_DIR"
 
-            cat > "$APP_DIR/.env" << ENVEOF
-            SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}
-            DEBUG=False
-            ALLOWED_HOSTS=${{ secrets.DJANGO_ALLOWED_HOSTS }}
-            SENTRY_DSN=${{ secrets.SENTRY_DSN }}
-            SENTRY_ENVIRONMENT=production
-            SENTRY_TRACES_SAMPLE_RATE=0.0
-            SENTRY_RELEASE=${{ github.sha }}
-            ENVEOF
+            printf "%s\n" \
+              "SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}" \
+              "DEBUG=False" \
+              "ALLOWED_HOSTS=${{ secrets.DJANGO_ALLOWED_HOSTS }}" \
+              "SENTRY_DSN=${{ secrets.SENTRY_DSN }}" \
+              "SENTRY_ENVIRONMENT=production" \
+              "SENTRY_TRACES_SAMPLE_RATE=0.0" \
+              "SENTRY_RELEASE=${{ github.sha }}" \
+              > "$APP_DIR/.env"
             echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login \
               -u "${{ secrets.DOCKERHUB_USERNAME }}" \
               --password-stdin
